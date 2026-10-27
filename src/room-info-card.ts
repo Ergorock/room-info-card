@@ -59,19 +59,20 @@ export class RoomInfoCard extends LitElement {
       this._reqId++;
     }
     this._config = merged;
+    this._recompute();
     if (this._hass) {
-      if (this._loadedFor === undefined) this._load();
+      if (this._loadedFor === undefined && !this._detached) this._load();
       this._ingest();
     }
   }
 
   set hass(hass: HomeAssistant) {
-    const first = !this._hass;
+    const prev = this._hass;
     this._hass = hass;
-    if (first) hass.connection?.addEventListener('ready', this._onReady);
+    if (!prev) hass.connection?.addEventListener('ready', this._onReady);
     if (this._config && this._loadedFor === undefined) this._load();
     this._ingest();
-    this.requestUpdate();
+    if (!prev || this._watchedChanged(prev, hass)) this.requestUpdate();
   }
 
   get hass(): HomeAssistant | undefined {
@@ -103,6 +104,15 @@ export class RoomInfoCard extends LitElement {
     this._timer = undefined;
     this._hass?.connection?.removeEventListener('ready', this._onReady);
     this._detached = true;
+  }
+
+  // Only re-render when an entity this card displays changed (hass is replaced on every state change in HA).
+  private _watchedChanged(prev: HomeAssistant, next: HomeAssistant): boolean {
+    const c = this._config;
+    if (!c) return true;
+    if (prev.locale !== next.locale) return true;
+    const ids = [c.entity, c.luminance?.entity].filter((id): id is string => !!id);
+    return ids.some((id) => prev.states[id] !== next.states[id]);
   }
 
   private _loadKey(c: RoomInfoCardConfig): string {

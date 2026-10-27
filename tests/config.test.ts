@@ -47,3 +47,16 @@ describe('pruneDefaults', () => {
     expect(mergeConfig(pruneDefaults(x))).toEqual(mergeConfig(x));
   });
 });
+
+describe('mergeConfig hardening', () => {
+  it('treats null blocks and values as defaults', () => {
+    const c = mergeConfig({ type: 't', entity: 'sensor.t', trend: null, style: { radius: null } } as any);
+    expect(c.trend.window).toBe(30);
+    expect(c.style.radius).toBe(16);
+  });
+
+  it('clamps decimals to 0..2', () => {
+    expect(mergeConfig({ type: 't', entity: 'sensor.t', decimals: -1 }).decimals).toBe(0);
+    expect(mergeConfig({ type: 't', entity: 'sensor.t', decimals: 150 }).decimals).toBe(2);
+  });
+});

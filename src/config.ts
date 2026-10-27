@@ -105,7 +105,8 @@ function deepMerge(base: any, over: any): any {
   if (!isObject(base) || !isObject(over)) return over === undefined ? base : over;
   const out: Record<string, any> = { ...base };
   for (const [k, v] of Object.entries(over)) {
-    if (v === undefined) continue;
+    // null comes from empty YAML keys (`trend:`); treat it as "not set".
+    if (v === undefined || v === null) continue;
     out[k] = isObject(base[k]) && isObject(v) ? deepMerge(base[k], v) : v;
   }
   return out;
@@ -123,6 +124,8 @@ export function withDefaults(user: UserConfig): RoomInfoCardConfig {
   const { luminance, ...rest } = user;
   const merged = deepMerge(DEFAULTS, rest) as RoomInfoCardConfig;
   if (luminance) merged.luminance = deepMerge(LUMINANCE_DEFAULTS, luminance);
+  const decimals = Math.round(Number(merged.decimals));
+  merged.decimals = Number.isFinite(decimals) ? Math.min(Math.max(decimals, 0), 2) : DEFAULTS.decimals;
   return merged;
 }
 

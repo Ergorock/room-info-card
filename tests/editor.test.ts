@@ -91,3 +91,29 @@ describe('getStubConfig', () => {
     expect(RoomInfoCard.getStubConfig({ states: {} } as any)).toEqual({ entity: '' });
   });
 });
+
+describe('editor luminance', () => {
+  it('shows luminance threshold defaults without entity', async () => {
+    const el = document.createElement('room-info-card-editor') as RoomInfoCardEditor;
+    el.hass = { locale: { language: 'fr' }, states: {} } as any;
+    el.setConfig({ type: 't', entity: 'sensor.t' });
+    document.body.appendChild(el);
+    await el.updateComplete;
+    const data = (el.shadowRoot!.querySelector('ha-form') as any).data;
+    expect(data.luminance).toEqual({ dark_below: 5000, bright_above: 20000 });
+  });
+
+  it('keeps threshold edits until an entity is chosen', async () => {
+    const el = document.createElement('room-info-card-editor') as RoomInfoCardEditor;
+    el.hass = { locale: { language: 'fr' }, states: {} } as any;
+    el.setConfig({ type: 't', entity: 'sensor.t' });
+    document.body.appendChild(el);
+    await el.updateComplete;
+    const form = () => el.shadowRoot!.querySelector('ha-form') as any;
+    form().dispatchEvent(new CustomEvent('value-changed', {
+      detail: { value: { ...form().data, luminance: { dark_below: 3000, bright_above: 20000 } } },
+    }));
+    await el.updateComplete;
+    expect(form().data.luminance.dark_below).toBe(3000);
+  });
+});

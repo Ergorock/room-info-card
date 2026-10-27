@@ -172,3 +172,28 @@ describe('room-info-card', () => {
     expect(card.getGridOptions()).toEqual({ columns: 3, rows: 2, min_columns: 2, min_rows: 2 });
   });
 });
+
+describe('room-info-card updates', () => {
+  it('applies a new stable_threshold immediately', async () => {
+    fetchMock.mockResolvedValue([{ t: NOW - 40 * MIN, v: 19 }, { t: NOW - MIN, v: 19.6 }]);
+    const card = await mount({}, { 'sensor.t': { state: '19.6', last_updated: iso(NOW - MIN) } });
+    expect(($(card, '.badge.trend ha-icon') as any).icon).toBe('mdi:arrow-top-right-thick');
+    card.setConfig({ type: 'custom:room-info-card', entity: 'sensor.t', trend: { stable_threshold: 1 } });
+    await flush(card);
+    expect(($(card, '.badge.trend ha-icon') as any).icon).toBe('mdi:arrow-right-bold');
+  });
+
+  it('skips re-render when only unrelated entities change', async () => {
+    const card = await mount({ luminance: { entity: 'sensor.lux' } }, { 'sensor.t': { state: '20' }, 'sensor.lux': { state: '100' } });
+    const prev = card.hass!;
+    card.hass = { ...prev, states: { ...prev.states, 'light.x': { entity_id: 'light.x', state: 'on' } } } as any;
+    expect(card.isUpdatePending).toBe(false);
+    card.hass = { ...prev, states: { ...prev.states, 'sensor.lux': { ...prev.states['sensor.lux'], state: '30000' } } } as any;
+    expect(card.isUpdatePending).toBe(true);
+  });
+
+  it('renders with null style values in yaml', async () => {
+    const card = await mount({ style: null } as any, { 'sensor.t': { state: '20' } });
+    expect($(card, '.temp')!.textContent!.trim()).toBe('20.0°');
+  });
+});

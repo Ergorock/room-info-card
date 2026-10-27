@@ -1,6 +1,6 @@
 import { html, LitElement, nothing } from 'lit';
 import { property, state } from 'lit/decorators.js';
-import { pruneDefaults, withDefaults, type UserConfig } from './config';
+import { LUMINANCE_DEFAULTS, pruneDefaults, withDefaults, type UserConfig } from './config';
 import { localize } from './localize';
 import type { HomeAssistant } from './types';
 
@@ -90,6 +90,9 @@ export class RoomInfoCardEditor extends LitElement {
   @state() private _config?: UserConfig;
 
   setConfig(config: UserConfig): void {
+    // HA echoes back the pruned config we emitted; keep our unpruned copy so
+    // threshold-only edits (e.g. luminance without entity yet) are not lost.
+    if (this._config && JSON.stringify(pruneDefaults(this._config)) === JSON.stringify(config)) return;
     this._config = config;
   }
 
@@ -101,14 +104,19 @@ export class RoomInfoCardEditor extends LitElement {
 
   private _valueChanged(ev: CustomEvent<{ value: UserConfig }>): void {
     ev.stopPropagation();
-    const config = pruneDefaults({ ...ev.detail.value, type: this._config?.type ?? ev.detail.value.type });
-    this._config = config;
+    const raw = { ...ev.detail.value, type: this._config?.type ?? ev.detail.value.type };
+    const config = pruneDefaults(raw);
+    this._config = raw;
     this.dispatchEvent(new CustomEvent('config-changed', { detail: { config }, bubbles: true, composed: true }));
   }
 
   protected render() {
     if (!this._config) return nothing;
-    const data = { ...withDefaults(this._config), entity: this._config.entity ?? '' };
+    const data = {
+      ...withDefaults(this._config),
+      entity: this._config.entity ?? '',
+      luminance: { ...LUMINANCE_DEFAULTS, ...this._config.luminance },
+    };
     return html`<ha-form
       .hass=${this.hass}
       .data=${data}
