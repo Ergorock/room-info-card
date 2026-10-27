@@ -151,7 +151,10 @@ Module pur `trend.ts` + module I/O `history.ts`.
    - référence = dernier point avec `t <= now - window`, sinon le plus ancien
      point disponible ;
    - courant = dernier point ;
-   - moins de 2 points, ou référence = courant → `null` (pas de pastille) ;
+   - aucun point → `null` (pas de pastille) ;
+   - référence = courant (dernière valeur antérieure à la fenêtre, capteur
+     silencieux) → `stable` : la valeur a tenu toute la fenêtre ;
+   - un seul point, dans la fenêtre → `null` (historique insuffisant) ;
    - `delta = courant.v - référence.v` ; `|delta| < threshold` → `stable`,
      `delta > 0` → `up`, sinon `down`.
 6. `stable` est masqué si `show_stable: false`. Toute erreur d'appel

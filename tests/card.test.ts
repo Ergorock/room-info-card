@@ -197,3 +197,12 @@ describe('room-info-card updates', () => {
     expect($(card, '.temp')!.textContent!.trim()).toBe('20.0°');
   });
 });
+
+describe('room-info-card quiet sensor', () => {
+  it('shows stable when the sensor did not report during the window', async () => {
+    // HA returns only the start-time state when nothing changed in the window.
+    fetchMock.mockResolvedValue([{ t: NOW - 30 * MIN, v: 19.6 }]);
+    const card = await mount({}, { 'sensor.t': { state: '19.6', last_updated: iso(NOW - 5 * 60 * MIN) } });
+    expect(($(card, '.badge.trend ha-icon') as any).icon).toBe('mdi:arrow-right-bold');
+  });
+});

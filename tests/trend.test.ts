@@ -14,12 +14,13 @@ describe('computeTrend', () => {
     expect(computeTrend([p(50, 25), p(35, 19), p(20, 19.1), p(1, 19.15)], now, W, 0.2)).toBe('stable'));
   it('falls back to oldest point when none before window', () =>
     expect(computeTrend([p(20, 19), p(1, 19.5)], now, W, 0.2)).toBe('up'));
-  it('null with fewer than 2 points', () => {
-    expect(computeTrend([], now, W, 0.2)).toBeNull();
-    expect(computeTrend([p(40, 19)], now, W, 0.2)).toBeNull();
+  it('null without points', () => expect(computeTrend([], now, W, 0.2)).toBeNull());
+  it('stable when the value did not change during the whole window', () => {
+    expect(computeTrend([p(50, 18), p(40, 19)], now, W, 0.2)).toBe('stable');
+    expect(computeTrend([p(40, 19)], now, W, 0.2)).toBe('stable');
   });
-  it('null when reference is the current point', () =>
-    expect(computeTrend([p(50, 18), p(40, 19)], now, W, 0.2)).toBeNull());
+  it('null with a single point inside the window', () =>
+    expect(computeTrend([p(10, 19)], now, W, 0.2)).toBeNull());
 });
 
 describe('prune', () => {
