@@ -4,6 +4,7 @@ import { classMap } from 'lit/directives/class-map.js';
 import { styleMap } from 'lit/directives/style-map.js';
 import { comfortLevel, LUMINANCE_BADGE, luminanceLevel, parseNumber, resolveColor } from './colors';
 import { mergeConfig, type RoomInfoCardConfig, type UserConfig } from './config';
+import './editor';
 import { fetchHistory } from './history';
 import { cardStyles } from './styles';
 import { addPoint, computeTrend, prune, type Point, type Trend } from './trend';
@@ -39,6 +40,13 @@ export class RoomInfoCard extends LitElement {
 
   static getConfigElement(): HTMLElement {
     return document.createElement('room-info-card-editor');
+  }
+
+  static getStubConfig(hass: HomeAssistant): { entity: string } {
+    const sensor = Object.values(hass.states).find(
+      (s) => s.entity_id.startsWith('sensor.') && s.attributes?.device_class === 'temperature',
+    );
+    return { entity: sensor?.entity_id ?? '' };
   }
 
   setConfig(config: UserConfig): void {

@@ -115,6 +115,11 @@ export function mergeConfig(user: UserConfig): RoomInfoCardConfig {
   if (!user || typeof user.entity !== 'string' || user.entity === '') {
     throw new Error('room-info-card: "entity" is required');
   }
+  return withDefaults(user);
+}
+
+// Same as mergeConfig without validation (used by the editor while entity is still empty).
+export function withDefaults(user: UserConfig): RoomInfoCardConfig {
   const { luminance, ...rest } = user;
   const merged = deepMerge(DEFAULTS, rest) as RoomInfoCardConfig;
   if (luminance) merged.luminance = deepMerge(LUMINANCE_DEFAULTS, luminance);
