@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>room-info-card dev</title>
+    <style>
+      :root {
+        --primary-text-color: #212121;
+        --secondary-text-color: #424242;
+        --primary-color: #03a9f4;
+        --disabled-color: #bdbdbd;
+        --ha-card-background: #fff;
+        --blue-color: #2196f3;
+        --green-color: #4caf50;
+        --red-color: #f44336;
+        --orange-color: #ff9800;
+        font-family: Roboto, system-ui, sans-serif;
+      }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: radial-gradient(circle at 30% 20%, #e9c58a, transparent 40%),
+          radial-gradient(circle at 70% 70%, #b5652c, transparent 45%),
+          linear-gradient(135deg, #c98d43, #6b4a2b 60%, #a5763d);
+      }
+      #grid {
+        display: grid;
+        grid-template-columns: repeat(6, 120px);
+        grid-auto-rows: 100px;
+        gap: 10px;
+        padding: 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="grid"></div>
+    <script type="module" src="./main.ts"></script>
+  </body>
+</html>
