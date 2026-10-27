@@ -17,15 +17,14 @@ Compatible HACS en dépôt personnalisé (`hacs.json` fourni).
 
 ```yaml
 type: custom:room-info-card
-entity: sensor.ble_temperature_chambre_antoine
-name: Antoine
+entity: sensor.chambre_1_temperature
+name: Chambre 1
 icon: mdi:face-man
 luminance:
-  entity: sensor.chambre_parents_rue_chambre_parents_rue_luminance
+  entity: sensor.chambre_1_luminance
 ```
 
-Toutes les options sont aussi éditables depuis l'éditeur graphique. Voir [docs/migration.yaml](docs/migration.yaml)
-pour le remplacement des tuiles du dashboard tablette.
+Toutes les options sont aussi éditables depuis l'éditeur graphique.
 
 ## Options
 

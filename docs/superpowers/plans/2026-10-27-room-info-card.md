@@ -231,7 +231,7 @@ Lifecycle (spec §4): on first `hass` (and on `hass.connection` `ready` events) 
 Tap: on click / Enter / Space, `this.dispatchEvent(new CustomEvent('hass-action', { bubbles: true, composed: true, detail: { config: { entity, tap_action }, action: 'tap' } }))`.
 
 - [ ] **Step 1: Write failing tests** in `tests/card.test.ts` (mock `../src/history` with `vi.mock`, use fake timers; helper `mount(config, states)` appends the element to `document.body`, sets config and `hass = { states, locale: { language: 'fr' }, callWS: vi.fn(), connection: { addEventListener: vi.fn(), removeEventListener: vi.fn() } }`, awaits `updateComplete`):
-  - `renders temperature, name and icon`: state `'19.74'`, `name: 'Antoine'`, `icon: 'mdi:face-man'` → `.temp` text `19.7°`, `.name` text `Antoine`, `ha-icon` in `.icon-wrap` has `icon === 'mdi:face-man'`.
+  - `renders temperature, name and icon`: state `'19.74'`, `name: 'Chambre 1'`, `icon: 'mdi:face-man'` → `.temp` text `19.7°`, `.name` text `Chambre 1`, `ha-icon` in `.icon-wrap` has `icon === 'mdi:face-man'`.
   - `renders dash when unavailable` (Review Focus 1): states `'unavailable'`, `''`, and entity absent → `.temp` is `—`, no `.badge.trend`, `.icon-wrap` has class `unavailable`.
   - `shows trend up badge`: `fetchHistory` resolves `[{t: now-40min, v: 19}, {t: now-1min, v: 19.6}]` → `.badge.trend ha-icon` icon `mdi:arrow-top-right-thick`.
   - `hides stable badge when show_stable false`.
@@ -287,7 +287,7 @@ Nested panels: use `ha-form` `{ type: 'expandable', name: 'trend', title, schema
 **Files:**
 - Create: `hacs.json` (`{ "name": "Room Info Card", "filename": "room-info-card.js", "render_readme": true }`), `README.md` (FR: install, options table from spec §2, example), `docs/migration.yaml`
 
-- [ ] **Step 1: Migration YAML.** Query HA (`ha_config_get_dashboard` search `query: "mushroom-template-card"` on the tablet dashboard) to retrieve all 10 tiles. For each: `entity`, `name` (from `secondary`), `icon`, `luminance.entity` (from the card_mod `lux` line). Devant/Derrière: `style: { tint: custom, tint_color: [124, 179, 66] }`. Keep the outer `type: grid` (`square: false`, `columns: 3`, existing `grid_options`). If HA is unreachable, write the three known tiles (Antoine, Simon, Valentin from the pasted config) and list the missing ones in the README as TODO for the user.
+- [ ] **Step 1: Migration YAML.** Query HA (`ha_config_get_dashboard` search `query: "mushroom-template-card"` on the tablet dashboard) to retrieve all 10 tiles. For each: `entity`, `name` (from `secondary`), `icon`, `luminance.entity` (from the card_mod `lux` line). Devant/Derrière: `style: { tint: custom, tint_color: [124, 179, 66] }`. Keep the outer `type: grid` (`square: false`, `columns: 3`, existing `grid_options`). If HA is unreachable, write the three known tiles (Chambre 1, 2, 3 from the pasted config) and list the missing ones in the README as TODO for the user.
 - [ ] **Step 2: Install in HA** (only with user approval at that point): copy `dist/room-info-card.js` to `/config/www/` (user action, or via an available tool) and register resource `/local/room-info-card.js?v=1` (module) with `ha_config_set_dashboard_resource`.
 - [ ] **Step 3: Real check.** Add one test card on a non-production view through the graphical editor; confirm rendering, trend badge after load, editor panels, French labels. Screenshot.
 - [ ] **Step 4: Commit** `docs: add README, HACS manifest and migration YAML`.

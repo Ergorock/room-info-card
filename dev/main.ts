@@ -7,9 +7,9 @@ const MIN = 60_000;
 
 // entity -> [value 40 min ago, current value]
 const series: Record<string, [number, number]> = {
-  'sensor.antoine': [20.2, 19.7],
-  'sensor.simon': [19.2, 19.2],
-  'sensor.valentin': [19.0, 19.6],
+  'sensor.chambre_1': [20.2, 19.7],
+  'sensor.chambre_2': [19.2, 19.2],
+  'sensor.chambre_3': [19.0, 19.6],
   'sensor.salon': [20.6, 20.1],
   'sensor.cuisine': [20.9, 21.6],
   'sensor.amis': [19.5, 20.1],
@@ -42,9 +42,9 @@ const hass = {
 
 const outdoor: UserConfig['style'] = { tint: 'custom', tint_color: [192, 242, 189], tint_opacity: 0.6 };
 const cards: Array<Partial<UserConfig>> = [
-  { entity: 'sensor.antoine', name: 'Antoine', icon: 'mdi:face-man', luminance: { entity: 'sensor.lux_dark' } },
-  { entity: 'sensor.simon', name: 'Simon', icon: 'mdi:face-man', luminance: { entity: 'sensor.lux_cloud' } },
-  { entity: 'sensor.valentin', name: 'Valentin', icon: 'mdi:face-man', luminance: { entity: 'sensor.lux_sun' } },
+  { entity: 'sensor.chambre_1', name: 'Chambre 1', icon: 'mdi:face-man', luminance: { entity: 'sensor.lux_dark' } },
+  { entity: 'sensor.chambre_2', name: 'Chambre 2', icon: 'mdi:face-man', luminance: { entity: 'sensor.lux_cloud' } },
+  { entity: 'sensor.chambre_3', name: 'Chambre 3', icon: 'mdi:face-man', luminance: { entity: 'sensor.lux_sun' } },
   { entity: 'sensor.salon', name: 'Salon', icon: 'mdi:home-floor-0' },
   { entity: 'sensor.cuisine', name: 'Cuisine', icon: 'mdi:countertop' },
   { entity: 'sensor.amis', name: 'Chambre amis', icon: 'mdi:bed' },

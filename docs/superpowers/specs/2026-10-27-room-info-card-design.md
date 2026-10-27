@@ -45,7 +45,7 @@ Seul `entity` est obligatoire. Les valeurs ci-dessous sont les défauts.
 
 ```yaml
 type: custom:room-info-card
-entity: sensor.ble_temperature_chambre_antoine  # obligatoire
+entity: sensor.chambre_1_temperature  # obligatoire
 name: <friendly_name de l'entité>
 icon: <icône de l'entité>
 decimals: 1                # 0..2
@@ -105,7 +105,7 @@ Règles :
 │     │ 🙂 │        │  rond d'icône teinté (couleur confort, 20 %)
 │     ╰────╯        │  icône colorée (couleur confort)
 │      19.7°        │  température
-│     Antoine       │  nom
+│     Chambre 1     │  nom
 └───────────────────┘
 ```
 

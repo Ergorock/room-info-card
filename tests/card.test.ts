@@ -54,9 +54,9 @@ afterEach(() => {
 
 describe('room-info-card', () => {
   it('renders temperature, name and icon', async () => {
-    const card = await mount({ name: 'Antoine', icon: 'mdi:face-man' }, { 'sensor.t': { state: '19.74' } });
+    const card = await mount({ name: 'Chambre 1', icon: 'mdi:face-man' }, { 'sensor.t': { state: '19.74' } });
     expect($(card, '.temp')!.textContent!.trim()).toBe('19.7°');
-    expect($(card, '.name')!.textContent!.trim()).toBe('Antoine');
+    expect($(card, '.name')!.textContent!.trim()).toBe('Chambre 1');
     expect(($(card, '.icon-wrap ha-icon') as any).icon).toBe('mdi:face-man');
   });
 
