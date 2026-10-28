@@ -36,7 +36,7 @@ Toutes les options sont aussi éditables depuis l'éditeur graphique.
 | `decimals` | `1` | Décimales affichées |
 | `tap_action` | `more-info` | Action standard HA |
 | `trend.enabled` | `true` | Calcul et affichage de la tendance |
-| `trend.window` | `30` | Fenêtre d'historique comparée (min) |
+| `trend.window` | `120` | Fenêtre d'historique comparée (min) |
 | `trend.stable_threshold` | `0.2` | Écart (°) en dessous duquel la tendance est stable |
 | `trend.show_stable` | `true` | Afficher → quand stable |
 | `comfort.cold_below` | `19` | En dessous : couleur froide |

@@ -75,7 +75,7 @@ export const LUMINANCE_DEFAULTS = { dark_below: 5000, bright_above: 20000 };
 export const DEFAULTS = {
   decimals: 1,
   tap_action: { action: 'more-info' } as ActionConfig,
-  trend: { enabled: true, window: 30, stable_threshold: 0.2, show_stable: true } as TrendConfig,
+  trend: { enabled: true, window: 120, stable_threshold: 0.2, show_stable: true } as TrendConfig,
   comfort: { cold_below: 19, hot_above: 22 } as ComfortConfig,
   style: {
     background: 'glass',

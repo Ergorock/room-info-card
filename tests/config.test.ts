@@ -1,10 +1,10 @@
-import { mergeConfig, pruneDefaults } from '../src/config';
+import { DEFAULTS, mergeConfig, pruneDefaults } from '../src/config';
 
 describe('mergeConfig', () => {
   it('fills defaults', () => {
     const c = mergeConfig({ type: 'custom:room-info-card', entity: 'sensor.t' });
     expect(c.decimals).toBe(1);
-    expect(c.trend).toEqual({ enabled: true, window: 30, stable_threshold: 0.2, show_stable: true });
+    expect(c.trend).toEqual({ enabled: true, window: 120, stable_threshold: 0.2, show_stable: true });
     expect(c.comfort).toEqual({ cold_below: 19, hot_above: 22 });
     expect(c.luminance).toBeUndefined();
     expect(c.style.background).toBe('glass');
@@ -33,7 +33,7 @@ describe('mergeConfig', () => {
 
 describe('pruneDefaults', () => {
   it('prunes defaults and empty objects', () => {
-    expect(pruneDefaults({ type: 't', entity: 'sensor.t', decimals: 1, trend: { window: 30, enabled: true }, style: { radius: 20 } }))
+    expect(pruneDefaults({ type: 't', entity: 'sensor.t', decimals: 1, trend: { window: DEFAULTS.trend.window, enabled: true }, style: { radius: 20 } }))
       .toEqual({ type: 't', entity: 'sensor.t', style: { radius: 20 } });
   });
 
@@ -51,7 +51,7 @@ describe('pruneDefaults', () => {
 describe('mergeConfig hardening', () => {
   it('treats null blocks and values as defaults', () => {
     const c = mergeConfig({ type: 't', entity: 'sensor.t', trend: null, style: { radius: null } } as any);
-    expect(c.trend.window).toBe(30);
+    expect(c.trend.window).toBe(DEFAULTS.trend.window);
     expect(c.style.radius).toBe(16);
   });
 

@@ -1,3 +1,4 @@
+import { DEFAULTS } from '../src/config';
 import { buildSchema, type RoomInfoCardEditor } from '../src/editor';
 import { localize } from '../src/localize';
 import { RoomInfoCard } from '../src/room-info-card';
@@ -68,7 +69,7 @@ describe('room-info-card-editor', () => {
   it('passes defaults to the form even with empty entity', async () => {
     const el = await mountEditor({ type: 't', entity: '' });
     const data = (el.shadowRoot!.querySelector('ha-form') as any).data;
-    expect(data.trend.window).toBe(30);
+    expect(data.trend.window).toBe(DEFAULTS.trend.window);
     expect(data.entity).toBe('');
   });
 
